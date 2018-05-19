@@ -1,5 +1,7 @@
 <template>
-  
+    <v-app >
+        <v-btn color="primary" dark @click="show()">施工中，点击返回</v-btn>
+    </v-app>
 </template>
 
 <script>
@@ -9,7 +11,12 @@ export default {
     return {
       msg: ''
     }
-  }
+  },
+  methods:{
+        show(){
+            history.go(-1);
+        }
+    }
 }
 </script>
 

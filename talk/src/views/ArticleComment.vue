@@ -1,23 +1,13 @@
 <template>
-<v-app id="inspire">
+<v-app id="inspire" style="background-color:#fff;">
     <v-layout row>
     <v-flex xs12>
         <v-toolbar color="primary" dark fixed>
             <v-btn icon @click="toBack()">
-                <v-icon>arrow_back</v-icon>
+                <v-icon>close</v-icon>
             </v-btn>
-            <v-toolbar-title>{{room_name}}</v-toolbar-title>
+            <v-toolbar-title>评论</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-menu>
-              <v-btn icon slot="activator">
-                  <v-icon>more_vert</v-icon>
-              </v-btn>
-              <v-list>
-                <v-list-tile v-for="item in options" :key="item.title" @click="option(item.id)">
-                  <v-list-tile-title>{{ item.title}}</v-list-tile-title>
-                </v-list-tile>
-              </v-list>
-            </v-menu>
         </v-toolbar>
     </v-flex>
     </v-layout>
@@ -25,14 +15,12 @@
     <div v-for="item in message">
         <v-container
           fluid
-          style="min-height: 0;"
-          grid-list-lg
+          style="min-height: 0; padding:16px 10px"
         >
             <v-flex xs12>
-              <v-card :class="{green:item.type}">
-              <v-container fluid grid-list-lg>
+              <v-container style="min-height: 0; padding:0">
                   <v-layout row>
-                    <v-flex xs4 md2 sm2>
+                    <v-flex xs3 md2 sm2>
                         <div style="text-align:center;">
                             <v-avatar
                                 slot="activator"
@@ -53,13 +41,12 @@
                     </v-flex>
                   </v-layout>
                 </v-container>
-              </v-card>
             </v-flex>
         </v-container>
     </div>
     </v-flex>
     <v-flex xs12 class="messaging">
-        <v-container grid-list-lg>
+        <v-container style="padding:10px">
             <v-layout row>
             <v-flex xs2>
                 <v-avatar size="43px">
@@ -83,7 +70,7 @@
                 dark
             >
                 <v-icon>
-                    add
+                    send
                 </v-icon>
             </v-btn></v-flex>
             </v-layout>
@@ -98,54 +85,33 @@ export default {
   data () {
     return {
       msg: '',
-      room_name:'JavaScript学习',
-      room_id:'',
+      room_name:'Room_id:',
+      room_id:'000',
       imgSrc:'./static/img.jpg',
       options:[
         {   id:1,
-            title: '删除房间' 
+            title: 'Leave the Room' 
         },
         { 
             id:2,
-            title: '房间设置' 
+            title: 'Setting(if is yours,include delete)' 
+        },          
+        { 
+            id:3,
+            title: 'extra options' 
         }
       ],
       //type =1 表示自己
       message:[
           {
               user_name:'博丽灵梦',
-              content:'信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息',
+              content:'评论',
               type:false
           },
           {
               user_name:'雾雨魔理沙',
-              content:'信息信息信息信息信息信息信息信息',
+              content:'评论评论评论评论评论评论',
               type:true
-          },
-          {
-              user_name:'博丽灵梦',
-              content:'信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息',
-              type:false
-          },
-          {
-              user_name:'博丽灵梦',
-              content:'信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息',
-              type:false
-          },
-          {
-              user_name:'雾雨魔理沙',
-              content:'信息信息信息信息信息信息信息信息',
-              type:true
-          },
-          {
-              user_name:'博丽灵梦',
-              content:'信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息',
-              type:false
-          },
-          {
-              user_name:'博丽灵梦',
-              content:'信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息信息',
-              type:false
           }
       ],
       texting:'',
@@ -160,7 +126,7 @@ export default {
       },
       toBack(){
           var self = this;
-          this.$router.push('/main/conversations');
+            history.go(-1);
       },
       option(_id){
           var self = this;
@@ -195,7 +161,7 @@ export default {
       },
       opSetting(){
           var self = this;
-          self.$router.push('/room-setting/'+self.room_id)
+          self.$router.push('/room-setting')
       }
   },
   mounted(){
