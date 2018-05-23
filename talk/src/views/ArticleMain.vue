@@ -81,6 +81,8 @@
 
             <v-flex xs12  style="font-size:15px;font-weight:light;color:rgb(175, 159, 159);">
                 <label>{{item.createdAt}}</label>
+                <label>赞同 &nbsp; {{item.voteCount}}</label>
+                <label>收藏 &nbsp;{{item.collectCount}}</label>
             </v-flex>
             </div>
         </v-card>
@@ -137,7 +139,17 @@ export default {
                 name:'Webpack环境配置',
                 id:1,
                 createdAt:'10分钟前',
-                username:'davy'
+                username:'davy',
+                voteCount:0,
+                collectCount:0
+            },
+            {
+                name:'Webpack环境配置',
+                id:1,
+                createdAt:'10分钟前',
+                username:'davy',
+                voteCount:0,
+                collectCount:0
             },
             {
                 name:'Webpack环境配置',
@@ -149,19 +161,17 @@ export default {
                 name:'Webpack环境配置',
                 id:1,
                 createdAt:'10分钟前',
-                username:'davy'
+                username:'davy',
+                voteCount:0,
+                collectCount:0
             },
             {
                 name:'Webpack环境配置',
                 id:1,
                 createdAt:'10分钟前',
-                username:'davy'
-            },
-            {
-                name:'Webpack环境配置',
-                id:1,
-                createdAt:'10分钟前',
-                username:'davy'
+                username:'davy',
+                voteCount:0,
+                collectCount:0
             }
         ],
         direction: 'top',
@@ -208,7 +218,7 @@ export default {
           self.$axios({
               method:'get',
               baseURL:self.$API.baseURL,
-              url:self.$API.columnAPI+'/1'+self.$API.articlesAPI + '?pageNum=1&pageSize=10',
+              url:'/myArticles?pageNum=1&pageSize=10',
               // withCredentials: true
               // url:'/static/conversation.json'
           }).then(res => {

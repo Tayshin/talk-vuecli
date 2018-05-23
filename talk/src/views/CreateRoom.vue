@@ -142,14 +142,6 @@ export default {
     },
     post(){
         var self = this;
-        console.log(
-            {
-                "name":self.name,
-                "description":self.description,
-                "homeId":self.chooseCom.id,
-                "tags":self.chips
-            }
-        );
         self.$axios({
             method:'post',
             baseURL:self.$API.baseURL,
@@ -157,8 +149,6 @@ export default {
             data:{
                 "name":self.name,
                 "description":self.description,
-                // "homeId":self.chooseCom.id,
-                "homeId":1,
                 "tags":self.chips
             }
         }).then(res =>{

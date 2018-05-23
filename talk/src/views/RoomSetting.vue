@@ -5,7 +5,7 @@
             <v-card>
             <v-toolbar color="primary" dark>
                 <v-btn icon @click="toBack()">
-                    <v-icon>close</v-icon>
+                    <v-icon>arrow_back</v-icon>
                 </v-btn>
             <v-toolbar-title class="white-text">{{Title}}</v-toolbar-title>
             </v-toolbar> 
@@ -195,7 +195,27 @@ export default {
                 console.warn('catch :');
                 console.log(error)
             });  
-    }
+    },
+    opLeave(){
+          var self = this;
+          self.$axios({
+              method:'delete',
+              baseURL:self.$API.baseURL,
+              url:self.$API.deleteAPI + '/' + self.room_id
+          }).then(res => {
+             if(res.data.code == 1){
+                    console.log(res.data)
+                    alert('you left the room.');
+                    self.toBack();
+                }
+                else{
+                    alert(self.$code.getCode(res.data.code));
+                }
+            }).catch(error => {
+                console.warn('catch :');
+                console.log(error)
+          }); 
+      },
   },
   mounted(){
       var self = this;

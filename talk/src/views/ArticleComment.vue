@@ -31,10 +31,11 @@
                                 alt=""
                                 >
                             </v-avatar>
-                            <div style="position:relative;margin-top:10px;">{{item.user_name}}</div>
+                            <div style="position:relative;margin-top:10px;">{{item.id}}</div>
                         </div>
                     </v-flex>
                     <v-flex xs8>
+                        <p style="">{{item.createdAt}}</p>
                         <div>
                             {{item.content}}
                         </div>
@@ -58,13 +59,14 @@
                     class="text-place"
                     single-line
                     hide-details
+                    v-model="texting"
                     :rules="textRules"
                     @change="searching(search)"
                 ></v-text-field>
             </v-flex>
             <v-flex xs2>
             <v-btn
-                @click="submit"
+                @click="comment"
                 color="green"
                 icon
                 dark
@@ -104,14 +106,51 @@ export default {
       //type =1 表示自己
       message:[
           {
-              user_name:'博丽灵梦',
+              id:'博丽灵梦',
               content:'评论',
-              type:false
+              type:false,
+              createdAt:'2018-10-10 10:10:10'
           },
           {
-              user_name:'雾雨魔理沙',
-              content:'评论评论评论评论评论评论',
-              type:true
+              id:'博丽灵梦',
+              content:'评论',
+              type:false,
+              createdAt:'2018-10-10 10:10:10'
+          },{
+              id:'博丽灵梦',
+              content:'评论',
+              type:false,
+              createdAt:'2018-10-10 10:10:10'
+          },{
+              id:'博丽灵梦',
+              content:'评论',
+              type:false,
+              createdAt:'2018-10-10 10:10:10'
+          },{
+              id:'博丽灵梦',
+              content:'评论',
+              type:false,
+              createdAt:'2018-10-10 10:10:10'
+          },{
+              id:'博丽灵梦',
+              content:'评论',
+              type:false,
+              createdAt:'2018-10-10 10:10:10'
+          },{
+              id:'博丽灵梦',
+              content:'评论',
+              type:false,
+              createdAt:'2018-10-10 10:10:10'
+          },{
+              id:'博丽灵梦',
+              content:'评论',
+              type:false,
+              createdAt:'2018-10-10 10:10:10'
+          },{
+              id:'博丽灵梦',
+              content:'评论',
+              type:false,
+              createdAt:'2018-10-10 10:10:10'
           }
       ],
       texting:'',
@@ -121,51 +160,69 @@ export default {
     }
   },
   methods:{
-      show(key){
-          alert(key);
-      },
-      toBack(){
-          var self = this;
+        show(key){
+            alert(key);
+        },
+        toBack(){
             history.go(-1);
-      },
-      option(_id){
-          var self = this;
-          switch(_id){
-                case 1:
-                    self.opLeave();
-                break;
-                case 2:
-                    self.opSetting();
-                break;
-          }
-      },
-      opLeave(){
-          var self = this;
-          self.$axios({
-              method:'delete',
-              baseURL:self.$API.baseURL,
-              url:self.$API.deleteAPI + '/' + self.room_id
-          }).then(res => {
-             if(res.data.code == 1){
-                    console.log(res.data)
-                    alert('you left the room.');
-                    self.toBack();
+        },
+        getComment(){
+            var self = this;
+            self.$axios({
+                 method:'get',
+                baseURL:self.$API.baseURL,
+                url:self.$API.articleAPI+'/'+self.article_id +'/comments?pageNum=1&pageSize=10',
+                //withCredentials: true
+               
+            }).then(res => {
+                if(res.data.code == 1){
+                    //点了踩
+                    self.message = res.data.payload.list;
                 }
                 else{
-                    alert(self.$code.getCode(res.data.code));
+                    self.$toast.center(self.$code.getCode(res.data.code));
                 }
             }).catch(error => {
                 console.warn('catch :');
-                console.log(error)
-          }); 
-      },
-      opSetting(){
-          var self = this;
-          self.$router.push('/room-setting')
-      }
-  },
+                console.log(error);
+            }); 
+        },
+        comment(){
+            var self = this;
+            if(self.texting == ""){
+                self.$toast.center('评论内容不能为空～');
+            }  else {
+                self.post();
+            }
+        },
+        post(){
+            var self = this;
+            self.$axios({
+                method:'post',
+                baseURL:self.$API.baseURL,
+                url:self.$API.articleAPI+'/'+self.article_id +'/comment',
+                //withCredentials: true
+                data:{
+                    "comment":self.texting
+                }
+            }).then(res => {
+                if(res.data.code == 1){
+                    //点了踩
+                    self.$toast.center('评论成功');
+                    self.getComment();
+                }
+                else{
+                    self.$toast.center(self.$code.getCode(res.data.code));
+                }
+            }).catch(error => {
+                console.warn('catch :');
+                console.log(error);
+            }); 
+        }
+},
   mounted(){
-      this.room_id = this.$route.params.roomid;
+      this.article_id = this.$route.params.articleid;
+      this.getComment();
   }
 }
 </script>

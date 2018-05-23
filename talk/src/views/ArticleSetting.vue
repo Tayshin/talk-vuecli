@@ -6,9 +6,9 @@
             <v-btn icon @click="toBack()">
                 <v-icon>close</v-icon>
             </v-btn>
-            <v-toolbar-title>编辑文章</v-toolbar-title>
+            <v-toolbar-title>修改文章</v-toolbar-title>
             <v-spacer></v-spacer>
-              <v-btn icon :disabled="!valid">
+              <v-btn icon :disabled="!valid" @click="submit()">
                   <v-icon>send</v-icon>
               </v-btn>
              
@@ -31,6 +31,7 @@
              <v-text-field
                   name="input-1"
                   label="文章内容"
+                  v-model="content"
                   textarea
                 ></v-text-field>
         </v-flex>
@@ -44,13 +45,16 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: '',
-      imgSrc:'./static/img.jpg',
-      texting:'',
-      textRules:[
-                v => !!v || 'required'
+        msg: '',
+        imgSrc:'./static/img.jpg',
+        //文章标题
+        texting:'',
+        textRules:[
+                    v => !!v || 'required'
         ],
         valid: true,
+        //文章内容
+        content:''
     }
   },
   methods:{
@@ -60,10 +64,74 @@ export default {
       toBack(){
           var self = this;
           this.$router.push('/article');
-      }
+      },
+      submit(){
+          var self = this;
+          if(self.texting == ""){
+              self.$toast.center('文章名称不能为空～');
+          } else if(self.content == ""){
+              self.$toast.center('文章内容不能为空～');
+          } else {
+              self.post();
+          }
+      },
+      post(){
+          var self = this;
+          console.log(self.texting,self.content);
+          self.$axios({
+              method:'put',
+              baseURL:self.$API.baseURL,
+              url:self.$API.articleAPI + '/' + self.article_id,
+              data:{
+                  "name":self.texting,
+                  "description":'',
+                  "tags":[],
+                  "columnId":1,
+                  "content":self.content,
+                  "parseType":1
+              }
+              // withCredentials: true
+              // url:'/static/conversation.json'
+          }).then(res => {
+             if(res.data.code == 1){
+                    self.$toast.center('修改成功～,3秒后返回列表');
+                    setTimeout(self.toBack,3000);                    
+                }
+                else{
+                    self.$toast.center(self.$code.getCode(res.data.code));
+                }
+            }).catch(error => {
+                self.$toast.center('网络故障');
+                console.warn('catch :');
+                console.log(error)
+          }); 
+      },
+      getArticle(){
+            var self = this;
+            self.$axios({
+              method:'get',
+              baseURL:self.$API.baseURL,
+              url:self.$API.articleAPI+'/'+self.article_id,
+            //   withCredentials: true
+            //   url:'/static/article.json'
+          }).then(res => {
+             if(res.data.code == 1){
+                    console.log(res.data.payload)
+                    self.texting = res.data.payload.name;
+                    self.content = res.data.payload.content;
+                }
+                else{
+                    alert(self.$code.getCode(res.data.code));
+                }
+            }).catch(error => {
+                console.warn('catch :');
+                console.log(error)
+          });  
+        }
   },
   mounted(){
-      this.room_id = this.$route.params.roomid;
+      this.article_id = this.$route.params.articleid;
+      this.getArticle();
   }
 }
 </script>

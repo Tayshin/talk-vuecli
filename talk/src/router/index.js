@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 //主页面
 import Menu from '@/views/Menu.vue'
+import SignUp from '@/views/SignUp.vue'
 
 //聊天部分
 import Main from '@/views/Main'
@@ -46,6 +47,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/sign-up',
+      name: 'SignUp',
+      component: SignUp
     },
     {
       path: '/main',
@@ -126,7 +132,7 @@ export default new Router({
       component:Article
     },
     {
-      path:'/article-comment',
+      path:'/article-comment/:articleid',
       component:ArticleComment
     },
     {
@@ -138,7 +144,7 @@ export default new Router({
       component:ArticleCollect
     },
     {
-      path:'/article-setting',
+      path:'/article-setting/:articleid',
       component:ArticleSetting
     }
 

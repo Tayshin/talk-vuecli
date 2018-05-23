@@ -8,7 +8,7 @@
             </v-btn>
             <v-toolbar-title>撰写文章</v-toolbar-title>
             <v-spacer></v-spacer>
-              <v-btn icon :disabled="!valid">
+              <v-btn icon :disabled="!valid" @click="submit()">
                   <v-icon>send</v-icon>
               </v-btn>
              
@@ -31,6 +31,7 @@
              <v-text-field
                   name="input-1"
                   label="文章内容"
+                  v-model="content"
                   textarea
                 ></v-text-field>
         </v-flex>
@@ -44,13 +45,16 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: '',
-      imgSrc:'./static/img.jpg',
-      texting:'',
-      textRules:[
-                v => !!v || 'required'
+        msg: '',
+        imgSrc:'./static/img.jpg',
+        //文章标题
+        texting:'',
+        textRules:[
+                    v => !!v || 'required'
         ],
         valid: true,
+        //文章内容
+        content:''
     }
   },
   methods:{
@@ -60,6 +64,45 @@ export default {
       toBack(){
           var self = this;
           this.$router.push('/article');
+      },
+      submit(){
+          var self = this;
+          if(self.texting == ""){
+              self.$toast.center('文章名称不能为空～');
+          } else if(self.content == ""){
+              self.$toast.center('文章内容不能为空～');
+          } else {
+              self.post();
+          }
+      },
+      post(){
+          var self = this;
+          console.log(self.texting,self.content);
+          self.$axios({
+              method:'post',
+              baseURL:self.$API.baseURL,
+              url:self.$API.articleAPI,
+              data:{
+                  "name":self.texting,
+                  "description":'',
+                  "tags":[],
+                  "content":self.content,
+                  "parseType":1
+              }
+              // withCredentials: true
+              // url:'/static/conversation.json'
+          }).then(res => {
+             if(res.data.code == 1){
+                    self.$toast.center('发表成功～,3秒后返回列表');
+                    setTimeout(self.toBack,3000);                    
+                }
+                else{
+                    self.$toast.center(self.$code.getCode(res.data.code));
+                }
+            }).catch(error => {
+                console.warn('catch :');
+                console.log(error)
+          }); 
       }
   },
   mounted(){

@@ -171,24 +171,25 @@ export default {
       },
       downloadItem(_item){
           var self = this;
-          self.$axios({
-                method:'get',
-                baseURL:self.$API.baseURL,
-                url:self.$API.downloadAPI + '/'+_item.id,
-            }).then(res => {
-                    alert('即将开始下载');
-            }).catch(error => {
-                console.warn('catch :');
-                console.log(error)
-            }); 
+        //   self.$axios({
+        //         method:'get',
+        //         baseURL:self.$API.baseURL,
+        //         url:self.$API.downloadAPI + '/'+_item.id,
+        //     }).then(res => {
+        //             alert('即将开始下载');
+        //     }).catch(error => {
+        //         console.warn('catch :');
+        //         console.log(error)
+        //     }); 
+        window.open(self.$API.baseURL+self.$API.downloadAPI + '/'+_item.id,)
       },
       getMyFiles(){
             var self = this;
             self.$axios({
                 method:'get',
                 baseURL:self.$API.baseURL,
-                // url:self.$API.sourceAPI + '?pageNum=1&pageSize=10',
-                url:'/static/source.json'
+                url:'mySources?pageNum=1&pageSize=10',
+                // url:'/static/source.json'
             }).then(res => {
                 if(res.data.code == 1){
                     console.log(res.data.payload)

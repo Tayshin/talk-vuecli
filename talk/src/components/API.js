@@ -4,8 +4,9 @@ export default {
     //searchAPI 搜索房间接口
     //mainAPI 查看社区列表
     //获取历史房间
-    baseURL:'http://localhost:8080',
+    // baseURL:'http://localhost:8080',
     // baseURL:'http://192.168.1.116:8888',
+    baseURL:'',
     searchAPI:'/room',
     mainAPI:'/home',
     conversationAPI:'/historyRooms',
@@ -19,5 +20,12 @@ export default {
     columnAPI:'/column',
     articleAPI:'/article',
     articlesAPI:'/articles',
-    collectAPI:'/collectedArticles'
+    collectAPI:'/collectedArticles',
+    collectArticleAPI:'/collectedArticle',
+
+    //本地头像路径
+    avatar_1:'./static/img/1.jpg',
+    avatar_2:'./static/img/2.jpg',
+    avatar_3:'./static/img/3.jpg',
+    avatar_4:'./static/img/4.jpg'
 }

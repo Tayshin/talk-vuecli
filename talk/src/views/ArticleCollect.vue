@@ -37,6 +37,8 @@
 
             <v-flex xs12  style="font-size:15px;font-weight:light;color:rgb(175, 159, 159);">
                 <label>{{item.createdAt}}</label>
+                <label>赞同 &nbsp; {{item.voteCount}}</label>
+                <label>收藏 &nbsp;{{item.collectCount}}</label>
             </v-flex>
             </v-touch>
         </v-card>
@@ -61,7 +63,9 @@ export default {
                 name:'开发机器学习应用的步骤',
                 id:1,
                 createdAt:'刚刚',
-                username:'davy'
+                username:'davy',
+                voteCount:0,
+                collectCount:0
             }
         ]
     }

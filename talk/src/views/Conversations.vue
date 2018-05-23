@@ -127,14 +127,14 @@ export default {
           self.$axios({
               method:'get',
               baseURL:self.$API.baseURL,
-              url:self.$API.conversationAPI,
+              url:'/myRooms?pageNum=1&pageSize=10',
               // withCredentials: true
               // url:'/static/conversation.json'
           }).then(res => {
              if(res.data.code == 1){
                     console.log(res.data.payload)
                     self.myrooms = new Array();
-                    self.myrooms = self.myrooms.concat(res.data.payload)
+                    self.myrooms = self.myrooms.concat(res.data.payload.list)
                     console.log(self.myrooms);
                 }
                 else{

@@ -21,7 +21,7 @@
               <img :src="imgSrc" >
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title>Davy</v-list-tile-title>
+              <v-list-tile-title>{{user_name}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -74,10 +74,12 @@
 export default {
   name: 'AppHeader',
   data (){
+      var self = this;
       return {
             //当前标题，可选conversation， people， 对应社区名
             Title:"聊天室",
-            imgSrc:"./static/img.jpg",
+            imgSrc:self.$API.avatar_1,
+            user_name:'Davy',
             drawer: null,
             //菜单选项：
             menu: [

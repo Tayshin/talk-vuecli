@@ -120,18 +120,19 @@ export default {
         toDetail(_item){
             this.$router.push('/f/'+_item.id);
         },
-        downloadItem(item){
+        downloadItem(_item){
             var self = this;
-            self.$axios({
-                method:'get',
-                baseURL:self.$API.baseURL,
-                url:self.$API.downloadAPI + '/' +item.id,
-            }).then(res => {
-                    alert('即将开始下载');
-            }).catch(error => {
-                console.warn('catch :');
-                console.log(error)
-            }); 
+            // self.$axios({
+            //     method:'get',
+            //     baseURL:self.$API.baseURL,
+            //     url:self.$API.downloadAPI + '/' +item.id,
+            // }).then(res => {
+            //         alert('即将开始下载');
+            // }).catch(error => {
+            //     console.warn('catch :');
+            //     console.log(error)
+            // }); 
+            window.open(self.$API.baseURL+self.$API.downloadAPI + '/'+_item.id,)
         },
         searching(_info){
             var self = this;
