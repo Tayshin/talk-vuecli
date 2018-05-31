@@ -120,36 +120,36 @@ export default {
             chips: [],
             chooseCom:null,
             users:[
-                {
-                    id:'1212',
-                    icon:1,
-                    username:'fuck'
-                },
-                {
-                    id:'1212',
-                    icon:1,
-                    username:'fuck'
-                },
-                {
-                    id:'1212',
-                    icon:1,
-                    username:'fuck'
-                },
-                {
-                    id:'1212',
-                    icon:1,
-                    username:'fuck'
-                },
-                {
-                    id:'1212',
-                    icon:1,
-                    username:'fuck'
-                },
-                {
-                    id:'1212',
-                    icon:1,
-                    username:'fuck'
-                }
+                // {
+                //     id:'1212',
+                //     icon:1,
+                //     username:'fuck'
+                // },
+                // {
+                //     id:'1212',
+                //     icon:1,
+                //     username:'fuck'
+                // },
+                // {
+                //     id:'1212',
+                //     icon:1,
+                //     username:'fuck'
+                // },
+                // {
+                //     id:'1212',
+                //     icon:1,
+                //     username:'fuck'
+                // },
+                // {
+                //     id:'1212',
+                //     icon:1,
+                //     username:'fuck'
+                // },
+                // {
+                //     id:'1212',
+                //     icon:1,
+                //     username:'fuck'
+                // }
                 
             ],
             isme:true,
