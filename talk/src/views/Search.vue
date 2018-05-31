@@ -46,10 +46,7 @@ export default {
             drawer: null,
             search:'',
             solution: [
-                   {
-               name:'JavaScript交流',
-               id:123
-             }          
+                        
             ]
       }
   },

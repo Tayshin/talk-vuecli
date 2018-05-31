@@ -23,7 +23,7 @@
             <v-layout row>
                 <v-flex xs2 md1>
                     <v-avatar size="36px">
-                        <img :src="imgSrc" alt="">
+                        <img :src="icon(item)" alt="">
                     </v-avatar>
                 </v-flex>
                 <v-flex xs3 md1 style="padding-top:14px;font-size:16px;">
@@ -59,18 +59,21 @@ export default {
         imgSrc:"./static/img.jpg",
         user_name:'Davy',
         articles: [
-            {
-                name:'开发机器学习应用的步骤',
-                id:1,
-                createdAt:'刚刚',
-                username:'davy',
-                voteCount:0,
-                collectCount:0
-            }
+            // {
+            //     name:'开发机器学习应用的步骤',
+            //     id:1,
+            //     createdAt:'刚刚',
+            //     username:'davy',
+            //     voteCount:0,
+            //     collectCount:0
+            // }
         ]
     }
   },
   methods:{
+      icon(item){
+          return this.$code.getIcon(item.icon)
+      },
       show(key){
           alert(key);
       },
@@ -78,9 +81,33 @@ export default {
           this.$router.push('/article');
       },
       deleteItem(item){
-            const index = this.articles.indexOf(item)
-            confirm('你确定要删除这个文件吗?') && this.articles.splice(index, 1)
+          var self = this;
+            confirm('你确定要删除这个文件吗?') &&  self.decollect(item);
       },
+      decollect(item){
+          var self = this;
+            const index = this.articles.indexOf(item)
+          this.articles.splice(index, 1);
+           self.$axios({
+                method:'delete',
+                baseURL:self.$API.baseURL,
+                url:self.$API.collectArticleAPI+'/'+self.item.id,
+            //   withCredentials: true
+                data:{
+                }
+            }).then(res => {
+                if(res.data.code == 1){
+                    //已经
+                    self.$toast.center('已取消收藏');
+                }
+                else{
+                    self.$toast.center(self.$code.getCode(res.data.code));
+                }
+            }).catch(error => {
+                console.warn('catch :');
+                console.log(error);
+            }); 
+        },
       downloadItem(){
         alert('download');
       },
@@ -130,19 +157,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.special .white-text{
+#inspire .white-text{
     color:#FFFFFF
 }
-.special {
+#inspire {
     position:absolute;
     width:100%;
 }
-.special .speed-dial {
+#inspire .speed-dial {
   position: fixed !important;
   text-align:center;
 }
 
-.special .speed-dial .icon {
+#inspire .speed-dial .icon {
   position:absolute;
   top:25%;
 }

@@ -22,6 +22,7 @@ export default {
     articlesAPI:'/articles',
     collectAPI:'/collectedArticles',
     collectArticleAPI:'/collectedArticle',
+    historyAPI:'/historyRoom',
 
     //本地头像路径
     avatar_1:'./static/img/1.jpg',

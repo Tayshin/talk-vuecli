@@ -12,8 +12,14 @@
                                 <v-icon>more_vert</v-icon>
                             </v-btn>
                             <v-list>
-                                <v-list-tile v-for="item in options" :key="item.title" @click="option(item.id)">
-                                <v-list-tile-title>{{ item.title}}</v-list-tile-title>
+                                <v-list-tile @click="opLeave()">
+                                <v-list-tile-title>返回</v-list-tile-title>
+                                </v-list-tile>
+                                <v-list-tile v-if="isme" @click="opSetting()">
+                                <v-list-tile-title>修改文章</v-list-tile-title>
+                                </v-list-tile>
+                                <v-list-tile v-if="isme" @click="opDelete()">
+                                <v-list-tile-title>删除文章</v-list-tile-title>
                                 </v-list-tile>
                             </v-list>
                             </v-menu>
@@ -23,34 +29,34 @@
                 <v-flex xs12 style="padding:10px 16px; font-size:22px; font-weight:bold;">
                     <label>{{Title}}</label>
                 </v-flex>
-                <v-flex style="padding:0 16px; font-size:18px;">
+                <v-flex id="hxh" style="padding:0 28px; font-size:18px;">
                     <div id="md"></div>
                 </v-flex>
             </v-flex>
-            <v-card style="position:fixed;bottom:0;height:60px;width:100%; background-color:#fff;">
-                    <v-btn @click="vote()"
-                    absolute outline :color="votecolor"
+            <v-card id="inspire" style="position:fixed;bottom:0;height:60px;width:100%; background-color:#fff;">
+                    <v-btn @click="clickVote()"
+                    absolute outline :color="votecolor" :class="{ 'agree-btn': ifVote, 'disagree-btn': !ifVote }"
                     style="position:absolute;left:20px;bottom:10px;">
                         <v-icon>keyboard_arrow_up</v-icon>
                         赞同
                         {{voteCount}}
                     </v-btn>
-                    <v-btn id="anti" :color="devotecolor" @click="devote()"
+                    <!--<v-btn id="anti" :color="devotecolor" @click="devote()"
                     absolute outline style="position:absolute;left:150px;bottom:10px;" >
                         <v-icon>keyboard_arrow_down</v-icon>
-                    </v-btn>
-                    <v-btn @click="collect()"
-                    icon style="color:rgb(152, 137, 137);position:absolute;right:50px;"
-                    
+                    </v-btn>-->
+                     <v-btn @click="toComment()"icon style="color:rgb(152, 137, 137);float:right;"
+                    > <v-icon>chat_bubble</v-icon></v-btn>
+                    <label style="color:rgb(152, 137, 137);position:absolute;right:0;bottom:4px;right:14px;font-size:8px;"
+                    >评论</label>  
+                    <v-btn @click="clickCollect()" :class="{'collect-btn':ifCollect}"
+                    icon style="color:rgb(152, 137, 137);float:right;"
                     > 
                         <v-icon>favorite</v-icon>
                     </v-btn>
-                    <label style="color:rgb(152, 137, 137);position:absolute;right:0;bottom:4px;right:65px;font-size:8px;"
+                    <label :class="{'collect-btn':ifCollect}" style="color:rgb(152, 137, 137);position:absolute;right:0;bottom:4px;right:65px;font-size:8px;"
                     >收藏&nbsp;{{collectCount}}</label>
-                    <v-btn @click="toComment()"icon style="color:rgb(152, 137, 137);position:absolute;right:0;"
-                    > <v-icon>chat_bubble</v-icon></v-btn>
-                    <label style="color:rgb(152, 137, 137);position:absolute;right:0;bottom:4px;right:14px;font-size:8px;"
-                    >评论</label>   
+                    
             </v-card>
     </v-app>
 </template>
@@ -59,35 +65,37 @@
 export default {
   data () {
     return {
-        votecolor:'primary',
+        votecolor:'',
         devotecolor:'primary',
         msg: '',
         imgSrc:"./static/img.jpg",
-        Title:'开发机器学习应用的步骤',
+        Title:'',
         username:'',
+        myname:'',
+        isme:true,
         voteCount:0,
         collectCount:0,
         article_id:1,
-        options:[
-            {   id:1,
-                title: '返回' 
-            },
-            { 
-                id:2,
-                title: '删除文章' 
-            },          
-            { 
-                id:3,
-                title: '编辑文章' 
-            }
-        ],
+  
         //点赞相关
-        ifVote:0,//0没有赞或者踩   1赞   2踩
+        ifVote:false,//1赞   false没有
         ifCollect:false,
-        mdstr:'### 开发机器学习应用的步骤\n#### 1. 收集数据（Collect data）\n网络、API、各种方法收集数据\n\n#### 2. 准备输入数据（Prepare the input data）\n基于算法，语言对数据进行格式化\n\n#### 3. 分析输入数据（Analyze the input data）\n数据预处理，确保前两部的数据有效\n非空判断\n一些明显异常的数据处理\n\n#### 4. 人为的介入(可无)（human involvement）\n人工的调整\n确保没有垃圾数据(don’t have garbage coming in)\n\n#### 5. 训练算法（Train the algorithm）\n机器学习开始\n给算法提供干净良好的数据，来提取信息\n\n#### 6. 测试算法（Test the algorithm）\n对算法进行评估\n对监督学习：可以跟一些公认、已知的值进行比较\n对非监督学习：其他指标\n如果不满意可以回到步骤4对算法进行调整\n\n#### 7. 使用(Use it)\n投入使用\n可能会遇到新数据，需要重新调整算法\n'
+        mdstr:"### 开发机器学习应用的步骤\n#### \n![alt text]('/static/img.jpg')\n"
     }
   },
   methods:{
+        getMe(){
+            var self = this;
+            self.$code.getUser().then(res =>{
+                console.log('res',res)
+                self.myname = res.data.payload.username;
+                 if(self.myname != self.username){
+                     self.isme = false;
+                } 
+            }).catch(error =>{
+                console.warn('fuck');
+            });
+        },
         show(){
             history.go(-1);
         },
@@ -130,20 +138,6 @@ export default {
                     console.log(error)
             });  
         },
-        option(_id){
-        var self = this;
-            switch(_id){
-                    case 1:
-                        self.opLeave();
-                    break;
-                    case 2:
-                        self.opDelete();
-                    break;
-                    case 3:
-                        self.opSetting();
-                    break;
-            }
-        },
         getArticle(){
             var self = this;
             self.$axios({
@@ -158,6 +152,7 @@ export default {
                         self.Title = res.data.payload.name;
                         self.mdstr = res.data.payload.content;
                         self.username = res.data.payload.username;
+                        self.imgSrc = self.$code.getIcon(res.data.payload.icon);
                         self.voteCount = res.data.payload.voteCount;
                         self.collectCount = res.data.payload.collectCount;
                         self.markdownPaser(self.mdstr);
@@ -186,39 +181,17 @@ export default {
             }).then(res => {
                 if(res.data.code == 1){
                     //点了赞or踩
-                        if(res.data.payload.type){
-                            self.ifVote = res.data.payload.type;
-                        }
+                    if(res.data.payload){
+                        self.ifVote = true;
                     }
+                }
                     else{
                         alert(self.$code.getCode(res.data.code));
                     }
-                }).catch(error => {
-                    console.warn('catch :');
-                    console.log(error)
+            }).catch(error => {
+                console.warn('catch :');
+                console.log(error)
             });  
-        },
-        getNum(){
-            var self = this;
-            self.$axios({
-              method:'get',
-              baseURL:self.$API.baseURL,
-              url:self.$API.articleAPI+'/'+self.article_id +'/vote',
-            //   withCredentials: true
-            }).then(res => {
-                if(res.data.code == 1){
-                    //点了赞or踩
-                        if(res.data.payload.type){
-                            self.ifVote = res.data.payload.type;
-                        }
-                    }
-                    else{
-                        alert(self.$code.getCode(res.data.code));
-                    }
-                }).catch(error => {
-                    console.warn('catch :');
-                    console.log(error)
-            }); 
         },
         vote(){
             var self = this;
@@ -232,10 +205,14 @@ export default {
                 }
             }).then(res => {
                 if(res.data.code == 1){
+                    if(res.data.payload){
                     //点了赞
-                    self.$toast.center('点赞成功～');
+                        self.$toast.center('点赞成功～');
+                        self.voteCount = res.data.payload;
+                        self.ifVote = true;
+                    }
                 }
-                else{
+                else {
                     self.$toast.center(self.$code.getCode(res.data.code));
                 }
             }).catch(error => {
@@ -246,17 +223,18 @@ export default {
         devote(){
             var self = this;
             self.$axios({
-                 method:'post',
+                method:'delete',
                 baseURL:self.$API.baseURL,
                 url:self.$API.articleAPI+'/'+self.article_id +'/vote',
             //   withCredentials: true
                 data:{
-                    "type":2
                 }
             }).then(res => {
                 if(res.data.code == 1){
-                    //点了踩
-                    self.$toast.center('点赞成功～');
+                    //取消赞
+                    self.$toast.center('点赞已收回～');
+                    self.voteCount = res.data.payload;
+                    self.ifVote = false;
                 }
                 else{
                     self.$toast.center(self.$code.getCode(res.data.code));
@@ -265,6 +243,28 @@ export default {
                 console.warn('catch :');
                 console.log(error);
             }); 
+        },
+        getIfCollect(){
+            var self = this;
+            self.$axios({
+              method:'get',
+              baseURL:self.$API.baseURL,
+              url:self.$API.collectArticleAPI+'/'+self.article_id,
+            //   withCredentials: true
+            }).then(res => {
+                if(res.data.code == 1){
+                    //如果收藏了
+                        if(res.data.payload){
+                            self.ifCollect = true;
+                        }
+                    }
+                    else{
+                        alert(self.$code.getCode(res.data.code));
+                    }
+                }).catch(error => {
+                    console.warn('catch :');
+                    console.log(error)
+            });  
         },
         collect(){
             var self = this;
@@ -277,8 +277,10 @@ export default {
                 }
             }).then(res => {
                 if(res.data.code == 1){
-                    //点了踩
+                    //已经
                     self.$toast.center('收藏成功～');
+                    self.collectCount = res.data.payload;
+                    self.ifCollect = true;
                 }
                 else{
                     self.$toast.center(self.$code.getCode(res.data.code));
@@ -287,16 +289,59 @@ export default {
                 console.warn('catch :');
                 console.log(error);
             }); 
-
+        },
+        decollect(){
+            var self = this;
+            self.$axios({
+                 method:'delete',
+                baseURL:self.$API.baseURL,
+                url:self.$API.collectArticleAPI+'/'+self.article_id,
+            //   withCredentials: true
+                data:{
+                }
+            }).then(res => {
+                if(res.data.code == 1){
+                    //已经
+                    self.$toast.center('已取消收藏');
+                    self.collectCount = res.data.payload;
+                    self.ifCollect = false;
+                }
+                else{
+                    self.$toast.center(self.$code.getCode(res.data.code));
+                }
+            }).catch(error => {
+                console.warn('catch :');
+                console.log(error);
+            }); 
+        },
+         clickCollect(){
+            var self = this;
+            if(self.ifCollect){
+                self.decollect();
+            }
+            else{
+                self.collect();
+            }
+        },
+        clickVote(){
+            var self = this;
+            if(self.ifVote){
+                self.devote();
+            }
+            else{
+                self.vote();
+            }
         }
 
     },
     mounted(){
         var self = this;
         self.article_id = this.$route.params.articleid;
-        // self.markdownPaser(this.mdstr);
+        self.markdownPaser(this.mdstr);
         self.getArticle();
         self.getIfVote();
+        self.getIfCollect();
+        self.getMe();
         // self.getNum();
     }
 }
@@ -309,4 +354,22 @@ export default {
 #anti{
    min-width:46px !important;
 }
+#inspire .agree-btn {
+    background-color:#1976d2 !important;
+    color:#fff;
+}
+#inspire .disagree-btn {
+    background-color:#fff !important;
+    color:#000;
+}
+.collect-btn {
+    color:#1976d2 !important;
+}
+#hxh #md{
+    width:100% !important;
+}
+#hxh img{
+    width:100% !important;
+}
+
 </style>

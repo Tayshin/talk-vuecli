@@ -10,7 +10,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="green darken-1" flat @click.native="dialog = false">取消</v-btn>
-            <v-btn color="green darken-1" flat @click="toBack()">是的</v-btn>
+            <v-btn color="green darken-1" flat @click="logOut()">是的</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -120,6 +120,25 @@ export default {
         },
         toChat(){
             this.$router.push('/main/conversations');
+        },
+        logOut(){
+            var self = this;
+            self.$axios({
+                method:'get',
+                baseURL:self.$API.baseURL,
+                url:'/test/logout'
+            }).then(res => {
+                if(res.data.code == 1){
+                        self.$toast.center('注销成功～');
+                        setTimeout(self.toBack,2000);
+                    }
+                    else{
+                        alert(self.$code.getCode(res.data.code));
+                    }
+                }).catch(error => {
+                    console.warn('catch :');
+                    console.log(error)
+            }); 
         }
     }
 }

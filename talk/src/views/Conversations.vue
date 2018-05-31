@@ -76,18 +76,14 @@ export default {
     data (){
         return {
           myrooms: [
-             {
-               name:'java交流',
-               id:123
-             },
-             {
-               name:'python学习',
-               id:123
-             },
-             {
-               name:'React学习',
-               id:123
-             }       
+            //  {
+            //    name:'JavaScript学习群',
+            //    id:123
+            //  }, 
+            //  {
+            //    name:'PHP学习群',
+            //    id:123
+            //  },   
           ],
           suggest: [
               {
@@ -105,6 +101,8 @@ export default {
           left: false,
           transition: 'slide-y-reverse-transition'
           //悬浮btn 控制参数
+
+          
         }
     },
     methods:{
@@ -158,20 +156,20 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.special .white-text{
+#inspire .white-text{
     color:#FFFFFF
 }
-.special {
+#inspire {
     position:absolute;
     top:56px;
     width:100%;
 }
-.special .speed-dial {
+#inspire .speed-dial {
   position: fixed !important;
   text-align:center;
 }
 
-.special .speed-dial .icon {
+#inspire .speed-dial .icon {
   position:absolute;
   top:25%;
 }

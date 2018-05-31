@@ -1,4 +1,5 @@
 //包含所有公共方法
+import axios from 'axios';
 export default {
     getCode(_code){
         switch(_code){
@@ -35,5 +36,45 @@ export default {
             default:
                 return '未记录的错误码 ：' + _code;
         }
+    },
+    getIcon(icon){
+        switch(icon){
+            case 1:
+                return './static/img/1.jpg';
+            break;
+            case 2:
+                return './static/img/2.jpg';
+            break;
+            case 3:
+                return './static/img/3.jpg';
+            break;
+            case 4:
+                return './static/img/4.jpg';
+            break;
+            case '1':
+                return './static/img/1.jpg';
+            break;
+            case '2':
+                return './static/img/2.jpg';
+            break;
+            case '3':
+                return './static/img/3.jpg';
+            break;
+            case '4':
+                return './static/img/4.jpg';
+            break;
+           
+            default:
+                return './static/img.jpg';
+        }
+    },
+    getUser(){
+        return axios({
+            method:'get',
+            // baseURL:'',
+            url:'/currentUser',
+            withCredentials: true,
+            // url:'/static/article.json'
+        });
     }
 }

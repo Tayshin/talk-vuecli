@@ -31,7 +31,7 @@
             <v-layout row>
                 <v-flex xs2 md1>
                     <v-avatar size="36px">
-                        <img :src="imgSrc" alt="">
+                        <img :src="icon(item)" alt="">
                     </v-avatar>
                 </v-flex>
                 <v-flex xs3 md1 style="padding-top:14px;font-size:16px;">
@@ -69,12 +69,24 @@ export default {
             //     name:'Webpack环境配置',
             //     id:1,
             //     date:'刚刚',
-            //     username:"Davy"
-            // }
+            //     username:"Davy",
+            //     icon:4
+            // },
+            // {
+            //     name:'Webpack环境配置',
+            //     id:1,
+            //     date:'刚刚',
+            //     username:"Davy",
+            //     icon:4
+            // },
             ]
       }
   },
   methods:{
+        icon(item){
+            var self = this;
+            return self.$code.getIcon(item.icon);
+        },
         show(key){
             alert(key);
         },

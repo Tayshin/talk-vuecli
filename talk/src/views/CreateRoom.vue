@@ -154,8 +154,8 @@ export default {
         }).then(res =>{
             if(res.data.code == 1){
                     console.log(res.data)
-                    alert('Created Room:'+ self.name);
-                    self.toBack();
+                    self.$toast.center('创建房间 '+self.name +'成功～') 
+                    setTimeout(self.toBack,2500);
                 }
                 else{
                     alert(self.$code.getCode(res.data.code));
@@ -190,7 +190,7 @@ export default {
   },
   mounted(){
       var self = this;
-      self.getCom();
+    //   self.getCom();
   }
 }
 </script>

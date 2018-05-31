@@ -84,7 +84,7 @@ export default {
             //菜单选项：
             menu: [
                 { id: '1', title: '所有聊天', icon: 'home', link:'/main/conversations' },
-                { id: '2', title: '朋友', icon: 'people',link:'/main/people' }
+                // { id: '2', title: '朋友', icon: 'people',link:'/main/people' }
             ],
             communities: [
                 { id: '1', name: 'webpack'}
@@ -93,52 +93,62 @@ export default {
     }
   },
   methods:{
-      show(key){
-          alert(key);
-      },
-      toSearch(){
-          var self = this;
-          self.$router.push('/search');
-      },
-      toLink(_item){
-          var self = this;
-          self.$data.Title = _item.title;
-          self.$router.push(_item.link);
-      },
-      toCom(_item){
-          var self = this;
-          self.$router.push('/c/'+_item.id)
-      },
-      getCom(){
-          var self = this;
-          self.$axios({
-              method:'get',
-              baseURL:self.$API.baseURL,
-              url:self.$API.mainAPI + '?pageNum=1&pageSize=10',
-            //   withCredentials: true
-            //   url:'/static/main.json'
-          }).then(res => {
-             if(res.data.code == 1){
-                    console.log(res.data.payload.list)
-                    self.communities = new Array();
-                    self.communities = self.communities.concat(res.data.payload.list)
-                    console.log(self.communities);
-                }
-                else{
-                    alert(self.$code.getCode(res.data.code));
-                }
-            }).catch(error => {
-                console.warn('catch :');
-                console.log(error)
-            });     
-      },
+        getMe(){
+                var self = this;
+                self.$code.getUser().then(res =>{
+                    console.log('res',res)
+                    self.imgSrc = self.$code.getIcon(res.data.payload.icon);
+                    self.user_name = res.data.payload.username;
+                }).catch(error =>{
+                    console.warn('fuck');
+                });
+        },
+        show(key){
+            alert(key);
+        },
+        toSearch(){
+            var self = this;
+            self.$router.push('/search');
+        },
+        toLink(_item){
+            var self = this;
+            self.$data.Title = _item.title;
+            self.$router.push(_item.link);
+        },
+        toCom(_item){
+            var self = this;
+            self.$router.push('/c/'+_item.id)
+        },
+    //   getCom(){
+    //       var self = this;
+    //       self.$axios({
+    //           method:'get',
+    //           baseURL:self.$API.baseURL,
+    //           url:self.$API.mainAPI + '?pageNum=1&pageSize=10',
+    //         //   withCredentials: true
+    //         //   url:'/static/main.json'
+    //       }).then(res => {
+    //          if(res.data.code == 1){
+    //                 console.log(res.data.payload.list)
+    //                 self.communities = new Array();
+    //                 self.communities = self.communities.concat(res.data.payload.list)
+    //                 console.log(self.communities);
+    //             }
+    //             else{
+    //                 alert(self.$code.getCode(res.data.code));
+    //             }
+    //         }).catch(error => {
+    //             console.warn('catch :');
+    //             console.log(error)
+    //         });     
+    //   },
       toMenu(){
           this.$router.push('/menu');
       }
   },
   mounted(){
       var self = this;
-      self.getCom();
+      self.getMe();
   }
 }
 </script>

@@ -141,8 +141,9 @@ export default {
             // }
         }).then(res =>{
             if(res.data.code == 1){
-                    console.log(res.data)
-                    alert('上传完成');
+                    console.log(res.data);
+                    self.$toast.center('上传成功～,3秒后返回列表');
+                    setTimeout(self.toBack,2500);    
                 }
                 else{
                     alert(self.$code.getCode(res.data.code));

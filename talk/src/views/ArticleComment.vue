@@ -27,11 +27,11 @@
                                 block
                             >
                                 <img
-                                :src="imgSrc"
+                                :src="icon(item)"
                                 alt=""
                                 >
                             </v-avatar>
-                            <div style="position:relative;margin-top:10px;">{{item.id}}</div>
+                            <div style="position:relative;margin-top:10px;">{{item.username}}</div>
                         </div>
                     </v-flex>
                     <v-flex xs8>
@@ -105,53 +105,7 @@ export default {
       ],
       //type =1 表示自己
       message:[
-          {
-              id:'博丽灵梦',
-              content:'评论',
-              type:false,
-              createdAt:'2018-10-10 10:10:10'
-          },
-          {
-              id:'博丽灵梦',
-              content:'评论',
-              type:false,
-              createdAt:'2018-10-10 10:10:10'
-          },{
-              id:'博丽灵梦',
-              content:'评论',
-              type:false,
-              createdAt:'2018-10-10 10:10:10'
-          },{
-              id:'博丽灵梦',
-              content:'评论',
-              type:false,
-              createdAt:'2018-10-10 10:10:10'
-          },{
-              id:'博丽灵梦',
-              content:'评论',
-              type:false,
-              createdAt:'2018-10-10 10:10:10'
-          },{
-              id:'博丽灵梦',
-              content:'评论',
-              type:false,
-              createdAt:'2018-10-10 10:10:10'
-          },{
-              id:'博丽灵梦',
-              content:'评论',
-              type:false,
-              createdAt:'2018-10-10 10:10:10'
-          },{
-              id:'博丽灵梦',
-              content:'评论',
-              type:false,
-              createdAt:'2018-10-10 10:10:10'
-          },{
-              id:'博丽灵梦',
-              content:'评论',
-              type:false,
-              createdAt:'2018-10-10 10:10:10'
-          }
+          
       ],
       texting:'',
       textRules:[
@@ -160,6 +114,10 @@ export default {
     }
   },
   methods:{
+        icon(item){
+            var self = this;
+            return self.$code.getIcon(item.icon);
+        },
         show(key){
             alert(key);
         },
@@ -169,11 +127,10 @@ export default {
         getComment(){
             var self = this;
             self.$axios({
-                 method:'get',
+                method:'get',
                 baseURL:self.$API.baseURL,
                 url:self.$API.articleAPI+'/'+self.article_id +'/comments?pageNum=1&pageSize=10',
                 //withCredentials: true
-               
             }).then(res => {
                 if(res.data.code == 1){
                     //点了踩
@@ -209,6 +166,7 @@ export default {
                 if(res.data.code == 1){
                     //点了踩
                     self.$toast.center('评论成功');
+                    self.texting ='';
                     self.getComment();
                 }
                 else{
@@ -218,11 +176,21 @@ export default {
                 console.warn('catch :');
                 console.log(error);
             }); 
+        },
+        getMe(){
+            var self = this;
+            self.$code.getUser().then(res =>{
+                console.log('res',res)
+                self.imgSrc = self.$code.getIcon(res.data.payload.icon);
+            }).catch(error =>{
+                console.warn('fuck');
+            });
         }
 },
   mounted(){
       this.article_id = this.$route.params.articleid;
       this.getComment();
+      this.getMe();
   }
 }
 </script>

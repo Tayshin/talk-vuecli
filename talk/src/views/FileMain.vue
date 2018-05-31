@@ -109,7 +109,7 @@ export default {
         left: false,
         transition: 'slide-y-reverse-transition',
         pagination: {
-            page:2
+            page:1
         },
             selected: [],
             headers: [
@@ -225,19 +225,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.special .white-text{
+#inspire .white-text{
     color:#FFFFFF
 }
-.special {
+#inspire {
     position:absolute;
     width:100%;
 }
-.special .speed-dial {
+#inspire .speed-dial {
   position: fixed !important;
   text-align:center;
 }
 
-.special .speed-dial .icon {
+#inspire .speed-dial .icon {
   position:absolute;
   top:25%;
 }

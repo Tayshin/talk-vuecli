@@ -144,35 +144,20 @@ export default {
                 collectCount:0
             },
             {
-                name:'Webpack环境配置',
+                name:'前端框架技术解析',
                 id:1,
-                createdAt:'10分钟前',
+                createdAt:'2018-05-24 09:00',
                 username:'davy',
                 voteCount:0,
                 collectCount:0
             },
             {
-                name:'Webpack环境配置',
+                name:'ES6新特性研究',
                 id:1,
-                createdAt:'10分钟前',
+                createdAt:'2018-05-16 10:00',
                 username:'davy'
             },
-            {
-                name:'Webpack环境配置',
-                id:1,
-                createdAt:'10分钟前',
-                username:'davy',
-                voteCount:0,
-                collectCount:0
-            },
-            {
-                name:'Webpack环境配置',
-                id:1,
-                createdAt:'10分钟前',
-                username:'davy',
-                voteCount:0,
-                collectCount:0
-            }
+            
         ],
         direction: 'top',
         fab: false,
@@ -193,6 +178,16 @@ export default {
     }
   },
   methods:{
+      getMe(){
+            var self = this;
+            self.$code.getUser().then(res =>{
+                console.log('res',res)
+                self.imgSrc = self.$code.getIcon(res.data.payload.icon);
+                self.user_name = res.data.payload.username;
+            }).catch(error =>{
+                console.warn('fuck');
+            });
+        },
       show(key){
           alert(key);
       },
@@ -240,6 +235,7 @@ export default {
   mounted(){
       var self = this;
         self.getArticles();
+        self.getMe();
   },
   computed: {
       pages () {
@@ -255,19 +251,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.special .white-text{
+#inspire .white-text{
     color:#FFFFFF
 }
-.special {
+#inspire {
     position:absolute;
     width:100%;
 }
-.special .speed-dial {
+#inspire .speed-dial {
   position: fixed !important;
   text-align:center;
 }
 
-.special .speed-dial .icon {
+#inspire .speed-dial .icon {
   position:absolute;
   top:25%;
 }

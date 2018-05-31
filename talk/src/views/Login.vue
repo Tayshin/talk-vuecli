@@ -19,11 +19,12 @@
                             label="用户名"
                             v-model="name"
                             :rules="nameRules"
-                            :counter="10"
+                            :counter="32"
                             required
                         ></v-text-field>
                         <v-text-field
                             label="密码"
+                            type="password"
                             v-model="pwd"
                         ></v-text-field>
                         
@@ -97,7 +98,7 @@ export default {
                 console.log(res);
                 if(res.data.code == 1){
                     self.$toast.center('欢迎您，'+ res.data.payload.username)
-                    setTimeout(toBack(),2500);
+                    setTimeout(self.toBack,2500);
                 }
                 else{
                     self.$toast.center(self.$code.getCode(res.data.code));
